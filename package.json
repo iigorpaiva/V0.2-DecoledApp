@@ -18,6 +18,7 @@
     "react-scroll-lock-component": "^1.2.0",
     "react-scrolllock": "^5.0.1",
     "react-time-range-picker": "^1.4.0",
+    "react-time-range-slider": "^1.1.2",
     "react-toggle-button": "^2.2.0"
   },
   "scripts": {

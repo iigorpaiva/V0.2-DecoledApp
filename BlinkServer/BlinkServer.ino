@@ -109,6 +109,7 @@ void loop() {
     app.process(&client);
 
   hora = ntp.getFormattedTime();  //Armazena na variável hora, o horário atual.
+  
   if (hora == ""){//Se a hora atual for igual à que definimos, irá acender o led. 
     ledcWrite(1, 255); // Acende o LED_1 a 100% -- HIGH
     Serial.println("LED ACESO");
