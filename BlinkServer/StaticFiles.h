@@ -34,7 +34,7 @@ void static_asset_manifest_json (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "327");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_asset_manifest_json_0, 327);
@@ -686,7 +686,7 @@ void static_favicon_ico (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "7654");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_favicon_ico_0, 7654);
@@ -814,7 +814,7 @@ void static_index (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "no-cache");
   res.set("Content-Length", "1368");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_index_0, 1368);
@@ -1627,7 +1627,7 @@ void static_logo192_png (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "9580");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_logo192_png_0, 9580);
@@ -2440,7 +2440,7 @@ void static_logo512_png (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "9580");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_logo512_png_0, 9580);
@@ -2474,7 +2474,7 @@ void static_manifest_json (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "235");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_manifest_json_0, 235);
@@ -2517,7 +2517,7 @@ void static_precache_manifest_669701f919b0dc17c2175070c86fb0df_js (Request &req,
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "343");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_precache_manifest_669701f919b0dc17c2175070c86fb0df_js_0, 343);
@@ -2538,7 +2538,7 @@ void static_robots_txt (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "78");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_robots_txt_0, 78);
@@ -4719,7 +4719,7 @@ void static_assets_css_default_css (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "25993");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_assets_css_default_css_0, 25993);
@@ -4806,7 +4806,7 @@ void static_assets_js_scripts_js (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "872");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_assets_js_scripts_js_0, 872);
@@ -5019,7 +5019,7 @@ void static_assets_scss__custom_scss (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "2388");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_assets_scss__custom_scss_0, 2388);
@@ -5468,7 +5468,7 @@ void static_assets_scss__variables_scss (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "5215");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_assets_scss__variables_scss_0, 5215);
@@ -5534,7 +5534,7 @@ void static_static_css_main_f6efb73a_chunk_css (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "623");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_static_css_main_f6efb73a_chunk_css_0, 623);
@@ -9526,7 +9526,7 @@ void static_static_js_2_4f4df2cd_chunk_js (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "47697");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_static_js_2_4f4df2cd_chunk_js_0, 32767);
@@ -9595,7 +9595,7 @@ void static_static_js_2_4f4df2cd_chunk_js_license_txt (Request &req, Response &r
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "637");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_static_js_2_4f4df2cd_chunk_js_license_txt_0, 637);
@@ -9715,7 +9715,7 @@ void static_static_js_main_f3af06a6_chunk_js (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "1266");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_static_js_main_f3af06a6_chunk_js_0, 1266);
@@ -9794,7 +9794,7 @@ void static_static_js_runtime_main_77bd7300_js (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "772");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_static_js_runtime_main_77bd7300_js_0, 772);
@@ -10287,7 +10287,7 @@ void static_static_media_logo_c67d3419_svg (Request &req, Response &res) {
   res.set("Content-Encoding", "gzip");
   res.set("Cache-Control", "public, max-age=31536000");
   res.set("Content-Length", "5744");
-  res.set("Last-Modified", "Mon, 23 Mar 2020 18:10:11 GMT");
+  res.set("Last-Modified", "Mon, 23 Mar 2020 20:00:45 GMT");
   res.set("Vary", "Accept-Encoding");
 
   res.writeP(static_static_media_logo_c67d3419_svg_0, 5744);

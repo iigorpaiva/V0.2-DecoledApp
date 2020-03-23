@@ -7,6 +7,8 @@
 #define WIFI_SSID "ISAIAS"
 #define WIFI_PASSWORD "09068888"
 
+// definição das saídas dos LEDs
+
 #define LED_1 26
 #define LED_2 27
 
@@ -14,7 +16,7 @@ WiFiUDP udp;
 
 NTPClient ntp(udp, "a.st1.ntp.br", -3 * 3600, 60000);//Cria um objeto "NTP" com as configurações.utilizada no Brasil 
 
-String hora;            // Variável que armazena
+String hora;  // Variável que armazena a hora atual
 
 WiFiServer server(80);
 Application app;
@@ -80,7 +82,6 @@ void setup() {
   app.get("/led1", &readLed1);
   app.get("/led2", &readLed2);
 
-
   app.route(staticFiles());
   
   app.put("/led1", &updateLed1);
@@ -110,9 +111,9 @@ void loop() {
 
   hora = ntp.getFormattedTime();  //Armazena na variável hora, o horário atual.
   
-  if (hora == ""){//Se a hora atual for igual à que definimos, irá acender o led. 
+  if (hora == "::"){ //Se a hora atual for igual à que definimos, irá acender o led. 
     ledcWrite(1, 255); // Acende o LED_1 a 100% -- HIGH
-    Serial.println("LED ACESO");
+    Serial.println("LED SALA ACESO");
   }
   
 }

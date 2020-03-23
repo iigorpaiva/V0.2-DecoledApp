@@ -4,6 +4,7 @@ import "./App.css";
 import { CircleSlider } from "react-circle-slider";
 import { RemoveScroll } from "react-remove-scroll";
 
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -109,6 +110,9 @@ class App extends Component {
             </RemoveScroll>
           </section>
           <section class="App-trans" id="controle">
+            <RemoveScroll>
+              
+            </RemoveScroll>
           </section>
         </header>
       </div>
