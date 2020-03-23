@@ -32,6 +32,7 @@ void readLed2(Request &req, Response &res) {
 void updateLed1(Request &req, Response &res) {
   char aux = req.read();
   Serial.println(aux);
+  
   if(aux == '0')
     ledcWrite(1, 0); // 0%
   if(aux == '2')
@@ -87,13 +88,16 @@ void setup() {
 
   server.begin();
 
+  // Relaciona o canal 1 a ao LED_1 uma frequência de 5000MHZ a 8 bits
   ledcSetup(1, 5000, 8);
   ledcAttachPin(LED_1, 1);
 
+  // Relaciona o canal 2 a ao LED_2 uma frequência de 5000MHZ a 8 bits
   ledcSetup(2, 5000, 8);
   ledcAttachPin(LED_2, 2);
 
-  ntp.begin();           // Inicia o protocolo ntp
+  // Inicia o protocolo ntp
+  ntp.begin();           
   ntp.forceUpdate();    // Atualização .
 
 }
@@ -101,10 +105,13 @@ void setup() {
 void loop() {
   WiFiClient client = server.available();
 
-  if (client.connected()) {
+  if (client.connected())
     app.process(&client);
-  }
 
   hora = ntp.getFormattedTime();  //Armazena na variável hora, o horário atual.
-  Serial.println(hora);     // Escreve a hora no monitor serial.
+  if (hora == ""){//Se a hora atual for igual à que definimos, irá acender o led. 
+    ledcWrite(1, 255); // Acende o LED_1 a 100% -- HIGH
+    Serial.println("LED ACESO");
+  }
+  
 }
