@@ -64,6 +64,11 @@ class App extends Component {
                       Hall
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#controle">
+                      Controle
+                    </a>
+                  </li>
                 </ul>
               </div>
             </nav>
@@ -102,6 +107,8 @@ class App extends Component {
                 stepSize={20}
               />
             </RemoveScroll>
+          </section>
+          <section class="App-trans" id="controle">
           </section>
         </header>
       </div>

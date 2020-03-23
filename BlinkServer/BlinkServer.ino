@@ -2,11 +2,19 @@
 #include "aWOT.h"
 #include "StaticFiles.h"
 
+#include <NTPClient.h> // biblioteca NTP ( Network Time Protocol )
+
 #define WIFI_SSID "ISAIAS"
 #define WIFI_PASSWORD "09068888"
 
 #define LED_1 26
 #define LED_2 27
+
+WiFiUDP udp;
+
+NTPClient ntp(udp, "a.st1.ntp.br", -3 * 3600, 60000);//Cria um objeto "NTP" com as configurações.utilizada no Brasil 
+
+String hora;            // Variável que armazena
 
 WiFiServer server(80);
 Application app;
@@ -64,7 +72,6 @@ void setup() {
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
     Serial.print(".");
   }
   Serial.println(WiFi.localIP());
@@ -86,6 +93,9 @@ void setup() {
   ledcSetup(2, 5000, 8);
   ledcAttachPin(LED_2, 2);
 
+  ntp.begin();           // Inicia o protocolo ntp
+  ntp.forceUpdate();    // Atualização .
+
 }
 
 void loop() {
@@ -94,4 +104,7 @@ void loop() {
   if (client.connected()) {
     app.process(&client);
   }
+
+  hora = ntp.getFormattedTime();  //Armazena na variável hora, o horário atual.
+  Serial.println(hora);     // Escreve a hora no monitor serial.
 }
