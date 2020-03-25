@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include "aWOT.h"
 #include "StaticFiles.h"
+#include <EEPROM.h>
 
 #include <NTPClient.h> // biblioteca NTP ( Network Time Protocol )
 
@@ -18,10 +19,16 @@ NTPClient ntp(udp, "a.st1.ntp.br", -3 * 3600, 60000);//Cria um objeto "NTP" com 
 
 String hora;  // Variável que armazena a hora atual
 
+String horaInicio;
+String horaFinal;
+
 WiFiServer server(80);
 Application app;
+
 String ledon1;
 String ledon2;
+String time1;
+String time2;
 
 void readLed1(Request &req, Response &res) {
   res.print(ledon1);
@@ -29,6 +36,14 @@ void readLed1(Request &req, Response &res) {
 
 void readLed2(Request &req, Response &res) {
   res.print(ledon2);
+}
+
+void readTime1(Request &req, Response &res) {
+  res.print(time1);
+}
+
+void readTime2(Request &req, Response &res) {
+  res.print(time2);
 }
 
 void updateLed1(Request &req, Response &res) {
@@ -68,6 +83,29 @@ void updateLed2(Request &req, Response &res) {
   return readLed1(req, res);
 }
 
+
+///////////////////////////////////////////////// CONFIGURAÇAO ALARME //////////////////////////////////////////////////////////////////
+
+void updateTime1(Request &req, Response &res) {
+  String aux3 = req.readString();
+  horaInicio = aux3+":00";
+     
+  Serial.println("hora inicio: "+ horaInicio);
+  
+  return readTime1(req, res);
+}
+
+
+void updateTime2(Request &req, Response &res) {
+  String aux4 = req.readString();
+  horaFinal = aux4+":00";
+
+  Serial.println("hora final: "+ horaFinal);
+  return readTime2(req, res);
+}
+
+///////////////////////////////////////////////// SETUP ESP32 //////////////////////////////////////////////////////////////////
+
 void setup() {
   Serial.begin(115200);
   pinMode(LED_1, OUTPUT);
@@ -82,10 +120,16 @@ void setup() {
   app.get("/led1", &readLed1);
   app.get("/led2", &readLed2);
 
+  app.get("/time1", &readTime1);
+  app.get("/time2", &readTime2);
+
   app.route(staticFiles());
   
   app.put("/led1", &updateLed1);
   app.put("/led2", &updateLed2);
+
+  app.put("/time1", &updateTime1);
+  app.put("/time2", &updateTime2);
 
   server.begin();
 
@@ -103,6 +147,8 @@ void setup() {
 
 }
 
+///////////////////////////////////////////////// LOOP ESP32 ///////////////////////////////////////////////////////////////////
+
 void loop() {
   WiFiClient client = server.available();
 
@@ -110,10 +156,18 @@ void loop() {
     app.process(&client);
 
   hora = ntp.getFormattedTime();  //Armazena na variável hora, o horário atual.
+  //Serial.println(horaInicio);
+  //Serial.println(hora);
+  //delay(1000);
   
-  if (hora == "::"){ //Se a hora atual for igual à que definimos, irá acender o led. 
-    ledcWrite(1, 255); // Acende o LED_1 a 100% -- HIGH
+  if (hora == horaInicio){ 
+    ledcWrite(1, 255);
     Serial.println("LED SALA ACESO");
+  }
+
+  if (hora == horaFinal){
+    ledcWrite(1, 0);
+    Serial.println("LED SALA APAGADO");
   }
   
 }

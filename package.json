@@ -25,7 +25,8 @@
     "react-time-range": "^1.0.4",
     "react-time-range-picker": "^1.4.0",
     "react-time-range-slider": "^1.1.2",
-    "react-toggle-button": "^2.2.0"
+    "react-toggle-button": "^2.2.0",
+    "reactjs-timepicker": "^1.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

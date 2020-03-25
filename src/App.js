@@ -4,11 +4,13 @@ import "./App.css";
 import { CircleSlider } from "react-circle-slider";
 import { RemoveScroll } from "react-remove-scroll";
 
+import JTimepicker from "reactjs-timepicker";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { value1: 0, value2: 0 };
+    this.state = { value1: 0, value2: 0,
+                   time1: "00:00", time2: "00:00" };
   }
 
   handleChange1 = value1 => {
@@ -23,11 +25,25 @@ class App extends Component {
       .then(this.setState({ value2 }));
   };
 
-  handleChangeRange = event => {
+  /*handleChangeRange = event => {
     this.setState({
       value1: event.target.valueAsNumber,
       value2: event.target.valueAsNumber
     });
+  };*/
+
+  handleChangeTime1 = time1 => {
+    fetch("/time1", { method: "PUT", body: time1 })
+      .then(response => response.text())
+      .then(this.setState({ time1 }))
+      .then(console.log(time1));
+  };
+
+  handleChangeTime2 = time2 => {
+    fetch("/time2", { method: "PUT", body: time2 })
+      .then(response => response.text())
+      .then(this.setState({ time2 }))
+      .then(console.log(time2));
   };
 
   render() {
@@ -111,7 +127,20 @@ class App extends Component {
           </section>
           <section class="App-trans" id="controle">
             <RemoveScroll>
-              
+              <h1 className="App-title">Início</h1>
+              <JTimepicker 
+                onChange={this.handleChangeTime1} 
+                color="#072c07"
+                inputVisible={true} 
+              />
+              <h1 className="App-title">Final</h1>
+              <JTimepicker 
+                value={this.state.time}
+                onChange={this.handleChangeTime2} 
+                color="#072c07" 
+                inputVisible={true}
+                style={{ size: 50 }}
+              />
             </RemoveScroll>
           </section>
         </header>

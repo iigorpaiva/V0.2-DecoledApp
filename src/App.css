@@ -18,7 +18,7 @@ html {
 }
 
 .App-header {
-  background-image: linear-gradient(rgb(2, 54, 18), rgb(15, 102, 20));
+  background: linear-gradient(to bottom, #003300 5%, #009933 91%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -43,12 +43,19 @@ h1 {
   color: white;
 }
 
+.row {
+  display:flex; flex-direction:row;
+}
+
 .App-link {
   color: #61dafb;
 }
 
 .App-title {
   font-size: 1.5em;
+  padding-top: 1.5vh;
+  padding-bottom: 0.5px;
+  
 }
 
 @keyframes App-logo-spin {
