@@ -25,17 +25,17 @@ String horaFinal;
 WiFiServer server(80);
 Application app;
 
-String ledon1;
-String ledon2;
+String led1;
+String led2;
 String time1;
 String time2;
 
 void readLed1(Request &req, Response &res) {
-  res.print(ledon1);
+  res.print(led1);
 }
 
 void readLed2(Request &req, Response &res) {
-  res.print(ledon2);
+  res.print(led2);
 }
 
 void readTime1(Request &req, Response &res) {
@@ -47,38 +47,39 @@ void readTime2(Request &req, Response &res) {
 }
 
 void updateLed1(Request &req, Response &res) {
-  char aux = req.read();
-  Serial.println(aux);
+  led1 = req.readString();
+  Serial.println(led1);
   
-  if(aux == '0')
+  if(led1 == "0")
     ledcWrite(1, 0); // 0%
-  if(aux == '2')
+  if(led1 == "20")
     ledcWrite(1, 51); // 20%
-  if(aux == '4')
+  if(led1 == "40")
     ledcWrite(1, 102); // 40%
-  if(aux == '6')
+  if(led1 == "60")
     ledcWrite(1, 153); // 60%
-  if(aux == '8')
+  if(led1 == "80")
     ledcWrite(1, 204); // 80%
-  if(aux == '1')
+  if(led1 == "10")
     ledcWrite(1, 255); // 100%
   return readLed1(req, res);
 }
 
 void updateLed2(Request &req, Response &res) {
-  char aux2 = req.read();
-  Serial.println(aux2);
-  if(aux2 == '0')
+  led2 = req.readString();
+  Serial.println(led2);
+  
+  if(led2 == "0")
     ledcWrite(2, 0); // 0%
-  if(aux2 == '2')
+  if(led2 == "20")
     ledcWrite(2, 51); // 20%
-  if(aux2 == '4')
+  if(led2 == "40")
     ledcWrite(2, 102); // 40%
-  if(aux2 == '6')
+  if(led2 == "60")
     ledcWrite(2, 153); // 60%
-  if(aux2 == '8')
+  if(led2 == "80")
     ledcWrite(2, 204); // 80%
-  if(aux2 == '1')
+  if(led2 == "100")
     ledcWrite(2, 255); // 100%
   return readLed1(req, res);
 }
@@ -87,8 +88,8 @@ void updateLed2(Request &req, Response &res) {
 ///////////////////////////////////////////////// CONFIGURAÇAO ALARME //////////////////////////////////////////////////////////////////
 
 void updateTime1(Request &req, Response &res) {
-  String aux3 = req.readString();
-  horaInicio = aux3+":00";
+  String auxTime1 = req.readString();
+  horaInicio = auxTime1+":00";
      
   Serial.println("hora inicio: "+ horaInicio);
   
@@ -97,8 +98,8 @@ void updateTime1(Request &req, Response &res) {
 
 
 void updateTime2(Request &req, Response &res) {
-  String aux4 = req.readString();
-  horaFinal = aux4+":00";
+  String auxTime2 = req.readString();
+  horaFinal = auxTime2+":00";
 
   Serial.println("hora final: "+ horaFinal);
   return readTime2(req, res);

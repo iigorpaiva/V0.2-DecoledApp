@@ -9,8 +9,7 @@ import JTimepicker from "reactjs-timepicker";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { value1: 0, value2: 0,
-                   time1: "00:00", time2: "00:00" };
+    this.state = { value1: 0, value2: 0, time1: "00:00", time2: "00:00" };
   }
 
   handleChange1 = value1 => {
@@ -128,16 +127,16 @@ class App extends Component {
           <section class="App-trans" id="controle">
             <RemoveScroll>
               <h1 className="App-title">Início</h1>
-              <JTimepicker 
-                onChange={this.handleChangeTime1} 
+              <JTimepicker
+                onChange={this.handleChangeTime1}
                 color="#072c07"
-                inputVisible={true} 
+                inputVisible={true}
               />
               <h1 className="App-title">Final</h1>
-              <JTimepicker 
+              <JTimepicker
                 value={this.state.time}
-                onChange={this.handleChangeTime2} 
-                color="#072c07" 
+                onChange={this.handleChangeTime2}
+                color="#072c07"
                 inputVisible={true}
                 style={{ size: 50 }}
               />
