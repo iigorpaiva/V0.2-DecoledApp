@@ -9,7 +9,7 @@ import JTimepicker from "reactjs-timepicker";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { led1: 0, led2: 0, time1: 0, time2: 0};
+    this.state = { led1: 0, led2: 0, time1: "00:00", time2: "00:00"};
   }
 
   componentDidMount(){
@@ -139,15 +139,15 @@ class App extends Component {
             <RemoveScroll>
               <h1 className="App-title">Início</h1>
               <JTimepicker
-                value={this.state.time1}
-                onChange={this.handleChangeTime1}
+                defaultTime={this.state.time1}
+                onChange={this.handleChangeTime1.bind(this)}
                 color="#072c07"
                 inputVisible={true}
               />
               <h1 className="App-title">Final</h1>
               <JTimepicker
-                value={this.state.time2}
-                onChange={this.handleChangeTime2}
+                defaultTime={this.state.time2}
+                onChange={this.handleChangeTime2.bind(this)}
                 color="#072c07"
                 inputVisible={true}
               />
