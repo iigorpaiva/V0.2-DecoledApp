@@ -81,15 +81,15 @@ void updateLed2(Request &req, Response &res) {
     ledcWrite(2, 204); // 80%
   if(led2 == "100")
     ledcWrite(2, 255); // 100%
-  return readLed1(req, res);
+  return readLed2(req, res);
 }
 
 
 ///////////////////////////////////////////////// CONFIGURAÇAO ALARME //////////////////////////////////////////////////////////////////
 
 void updateTime1(Request &req, Response &res) {
-  String auxTime1 = req.readString();
-  horaInicio = auxTime1+":00";
+  time1 = req.readString();
+  horaInicio = time1+":00";
      
   Serial.println("hora inicio: "+ horaInicio);
   
@@ -98,8 +98,8 @@ void updateTime1(Request &req, Response &res) {
 
 
 void updateTime2(Request &req, Response &res) {
-  String auxTime2 = req.readString();
-  horaFinal = auxTime2+":00";
+  time2 = req.readString();
+  horaFinal = time2+":00";
 
   Serial.println("hora final: "+ horaFinal);
   return readTime2(req, res);

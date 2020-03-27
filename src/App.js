@@ -9,25 +9,36 @@ import JTimepicker from "reactjs-timepicker";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { value1: 0, value2: 0, time1: "00:00", time2: "00:00" };
+    this.state = { led1: 0, led2: 0, time1: 0, time2: 0};
   }
 
-  handleChange1 = value1 => {
-    fetch("/led1", { method: "PUT", body: value1 })
+  componentDidMount(){
+    Promise.all([
+        fetch('/led1'),
+        fetch('/led2'),
+        fetch('/time1'),
+        fetch('/time2')
+    ])
+    .then(([res1, res2, res3, res4]) => Promise.all([res1.text(), res2.text(), res3.text(), res4.text()]))
+    .then(([led1, led2, time1, time2]) => this.setState({led1, led2, time1, time2}))
+  }
+
+  handleChange1 = led1 => {
+    fetch("/led1", { method: "PUT", body: led1 })
       .then(response => response.text())
-      .then(this.setState({ value1 }));
+      .then(this.setState({ led1 }));
   };
 
-  handleChange2 = value2 => {
-    fetch("/led2", { method: "PUT", body: value2 })
+  handleChange2 = led2 => {
+    fetch("/led2", { method: "PUT", body: led2 })
       .then(response => response.text())
-      .then(this.setState({ value2 }));
+      .then(this.setState({ led2 }));
   };
 
   /*handleChangeRange = event => {
     this.setState({
-      value1: event.target.valueAsNumber,
-      value2: event.target.valueAsNumber
+      led1: event.target.valueAsNumber,
+      led2: event.target.valueAsNumber
     });
   };*/
 
@@ -96,7 +107,7 @@ class App extends Component {
             <RemoveScroll>
               <CircleSlider
                 onChange={this.handleChange1}
-                value={this.state.value1}
+                value={this.state.led1}
                 size={150}
                 showTooltip={true}
                 gradientColorFrom="#009f5c"
@@ -113,7 +124,7 @@ class App extends Component {
             <RemoveScroll>
               <CircleSlider
                 onChange={this.handleChange2}
-                value={this.state.value4}
+                value={this.state.led2}
                 size={140}
                 showTooltip={true}
                 gradientColorFrom="#009f5c"
@@ -128,17 +139,17 @@ class App extends Component {
             <RemoveScroll>
               <h1 className="App-title">Início</h1>
               <JTimepicker
+                value={this.state.time1}
                 onChange={this.handleChangeTime1}
                 color="#072c07"
                 inputVisible={true}
               />
               <h1 className="App-title">Final</h1>
               <JTimepicker
-                value={this.state.time}
+                value={this.state.time2}
                 onChange={this.handleChangeTime2}
                 color="#072c07"
                 inputVisible={true}
-                style={{ size: 50 }}
               />
             </RemoveScroll>
           </section>
