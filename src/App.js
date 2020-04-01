@@ -4,23 +4,22 @@ import "./App.css";
 import { CircleSlider } from "react-circle-slider";
 import { RemoveScroll } from "react-remove-scroll";
 
-import JTimepicker from "reactjs-timepicker";
+import ScheduleSelector from "react-schedule-selector";
+import { layoutGenerator } from "react-break";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { led1: 0, led2: 0, time1: "00:00", time2: "00:00"};
+    this.state = { led1: 0, led2: 0, ledC: 0, schedule: [] };
   }
 
-  componentDidMount(){
-    Promise.all([
-        fetch('/led1'),
-        fetch('/led2'),
-        fetch('/time1'),
-        fetch('/time2')
-    ])
-    .then(([res1, res2, res3, res4]) => Promise.all([res1.text(), res2.text(), res3.text(), res4.text()]))
-    .then(([led1, led2, time1, time2]) => this.setState({led1, led2, time1, time2}))
+  componentDidMount() {
+    Promise.all([fetch("/led1"), fetch("/led2"), fetch("/ledC"), fetch("/control")])
+      .then(([res1, res2, res3, res4]) =>
+        Promise.all([res1.text(), res2.text(), res3.text(), res4.json()])
+        )
+      .then(([led1, led2, ledC, schedule]) => this.setState({ led1, led2, ledC, schedule}))
+
   }
 
   handleChange1 = led1 => {
@@ -35,28 +34,36 @@ class App extends Component {
       .then(this.setState({ led2 }));
   };
 
-  /*handleChangeRange = event => {
-    this.setState({
-      led1: event.target.valueAsNumber,
-      led2: event.target.valueAsNumber
-    });
-  };*/
-
-  handleChangeTime1 = time1 => {
-    fetch("/time1", { method: "PUT", body: time1 })
+  handleChangeControl = ledC => {
+    fetch("/ledC", { method: "PUT", body: ledC })
       .then(response => response.text())
-      .then(this.setState({ time1 }))
-      .then(console.log(time1));
+      .then(this.setState({ ledC }));
   };
 
-  handleChangeTime2 = time2 => {
-    fetch("/time2", { method: "PUT", body: time2 })
-      .then(response => response.text())
-      .then(this.setState({ time2 }))
-      .then(console.log(time2));
+  handleChange = newSchedule => {
+    
+    const horarios = JSON.stringify(newSchedule);
+
+    fetch("/control", { method: "PUT", body: horarios })
+      .then(response => response.json())
+      .then(this.setState({ schedule: newSchedule }))
+
+    console.log("meu json eh: ", horarios);
   };
 
   render() {
+    const layout = layoutGenerator({
+      mobile: 0,
+      phablet: 550,
+      tablet: 768,
+      desktop: 992
+    });
+
+    const OnMobile = layout.is("mobile");
+    const OnAtLeastTablet = layout.isAtLeast("tablet");
+    const OnAtMostPhablet = layout.isAtMost("phablet");
+    const OnDesktop = layout.is("desktop");
+
     return (
       <div className="App">
         <header className="App-header">
@@ -125,7 +132,7 @@ class App extends Component {
               <CircleSlider
                 onChange={this.handleChange2}
                 value={this.state.led2}
-                size={140}
+                size={150}
                 showTooltip={true}
                 gradientColorFrom="#009f5c"
                 gradientColorTo="#006b5c"
@@ -136,22 +143,32 @@ class App extends Component {
             </RemoveScroll>
           </section>
           <section class="App-trans" id="controle">
-            <RemoveScroll>
-              <h1 className="App-title">Início</h1>
-              <JTimepicker
-                defaultTime={this.state.time1}
-                onChange={this.handleChangeTime1.bind(this)}
-                color="#072c07"
-                inputVisible={true}
+            <OnDesktop>
+              <ScheduleSelector
+                selection={this.state.schedule}
+                numDays={20}
+                minTime={16}
+                maxTime={23}
+                onChange={this.handleChange}
+                selectedColor="#14a806"
+                margin={2}
               />
-              <h1 className="App-title">Final</h1>
-              <JTimepicker
-                defaultTime={this.state.time2}
-                onChange={this.handleChangeTime2.bind(this)}
-                color="#072c07"
-                inputVisible={true}
-              />
-            </RemoveScroll>
+            </OnDesktop>
+            <OnMobile>
+              <img src={logo} className="App-logo" alt="logo" />
+              <h1 className="App-title">Controle</h1>
+            </OnMobile>
+            <CircleSlider
+              onChange={this.handleChangeControl}
+              value={this.state.ledC}
+              size={150}
+              showTooltip={true}
+              gradientColorFrom="#009f5c"
+              gradientColorTo="#006b5c"
+              showPercentage={true}
+              tooltipColor="#6ab6e1"
+              stepSize={20}
+            />
           </section>
         </header>
       </div>

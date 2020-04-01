@@ -18,7 +18,7 @@ html {
 }
 
 .App-header {
-  background: linear-gradient(to bottom, #003300 0%, #003300 136%);
+  background: linear-gradient(to bottom, #003300 5%, #003300 128%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -41,6 +41,8 @@ h1 {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-bottom: 20vh;
+  padding-top: 15vh;
 }
 
 .row {

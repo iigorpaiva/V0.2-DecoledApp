@@ -1,34 +1,47 @@
+#include <NTPClient.h>
+
 #include <WiFi.h>
 #include "aWOT.h"
 #include "StaticFiles.h"
-#include <EEPROM.h>
 
-#include <NTPClient.h> // biblioteca NTP ( Network Time Protocol )
+#include <WiFiUdp.h>
 
 #define WIFI_SSID "ISAIAS"
 #define WIFI_PASSWORD "09068888"
 
-// definição das saídas dos LEDs
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP);
 
+String horaAtual;
+String dayStamp;
+String timeStamp;
+
+// definição das saídas dos LEDs
 #define LED_1 26
 #define LED_2 27
-
-WiFiUDP udp;
-
-NTPClient ntp(udp, "a.st1.ntp.br", -3 * 3600, 60000);//Cria um objeto "NTP" com as configurações.utilizada no Brasil 
-
-String hora;  // Variável que armazena a hora atual
-
-String horaInicio;
-String horaFinal;
 
 WiFiServer server(80);
 Application app;
 
+// circle slider dos leds (ou circuitos)
 String led1;
 String led2;
-String time1;
-String time2;
+
+// circle slider da intensidade do ativador
+String ledC;
+
+// variaveis do controle: control (intervalos selecionados), controlback (intervalos para voltar para o render())
+String control;
+String controlback;
+
+// variaveis do ativador
+String compara;
+String comparaHora;
+bool continua = true;
+bool novaSelecao = false;
+
+///////////////////////////////////////////////// GETTERS DO SERVIDOR ///////////////////////////////////////////////////////////////////
 
 void readLed1(Request &req, Response &res) {
   res.print(led1);
@@ -38,17 +51,20 @@ void readLed2(Request &req, Response &res) {
   res.print(led2);
 }
 
-void readTime1(Request &req, Response &res) {
-  res.print(time1);
+void readLedC(Request &req, Response &res) {
+  res.print(ledC);
 }
 
-void readTime2(Request &req, Response &res) {
-  res.print(time2);
+void readControl(Request &req, Response &res) {
+  res.print(controlback);
 }
+
+/////////////////////////////////////////////////  RESPOSTA DO SERVIDOR  /////////////////////////////////////////////////////////////////////
+
 
 void updateLed1(Request &req, Response &res) {
   led1 = req.readString();
-  Serial.println(led1);
+  Serial.println("LED 1: "+led1);
   
   if(led1 == "0")
     ledcWrite(1, 0); // 0%
@@ -67,7 +83,7 @@ void updateLed1(Request &req, Response &res) {
 
 void updateLed2(Request &req, Response &res) {
   led2 = req.readString();
-  Serial.println(led2);
+  Serial.println("LED 2: "+led2);
   
   if(led2 == "0")
     ledcWrite(2, 0); // 0%
@@ -84,28 +100,48 @@ void updateLed2(Request &req, Response &res) {
   return readLed2(req, res);
 }
 
-
-///////////////////////////////////////////////// CONFIGURAÇAO ALARME //////////////////////////////////////////////////////////////////
-
-void updateTime1(Request &req, Response &res) {
-  time1 = req.readString();
-  horaInicio = time1+":00";
-     
-  Serial.println("hora inicio: "+ horaInicio);
+void updateLedC(Request &req, Response &res) {
+  ledC = req.readString();
+  Serial.println("LED de controle: "+ledC);
   
-  return readTime1(req, res);
+  return readLedC(req, res);
+}
+
+///////////////////////////////////////////////// CONFIGURAÇAO ATIVADOR //////////////////////////////////////////////////////////////////
+
+void updateControl(Request &req, Response &res) {
+  control = req.readString();
+  controlback = control;
+  
+  // TRATAMENTO PARA LIMPAR A STRING JSON
+  int tam = control.length();
+  control.remove(tam-1, 1);
+  control.remove(0, 1);
+
+  for (int i=0; i  <control.length();++i){
+    char c = control.charAt(i);
+    if(c=='{'){
+      control.remove(i, 1);
+      i--;
+    }
+    if(c=='"')control.remove(i, 1);
+    if(c=='}')control.remove(i, 1);
+    if(c=='.')control.remove(i, 4);
+    
+  }
+  
+  Serial.println(control+" SELECIONADA");
+
+  if(control.length()>0)
+    control = control + ",";
+
+  novaSelecao = true;
+  
+  return readControl(req, res);
 }
 
 
-void updateTime2(Request &req, Response &res) {
-  time2 = req.readString();
-  horaFinal = time2+":00";
-
-  Serial.println("hora final: "+ horaFinal);
-  return readTime2(req, res);
-}
-
-///////////////////////////////////////////////// SETUP ESP32 //////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////// SETUP ESP32 //////////////////////////////////////////////////////////////////////////
 
 void setup() {
   Serial.begin(115200);
@@ -115,22 +151,22 @@ void setup() {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
+    delay(1000);
   }
   Serial.println(WiFi.localIP());
 
   app.get("/led1", &readLed1);
   app.get("/led2", &readLed2);
+  app.get("/ledC", &readLedC);
 
-  app.get("/time1", &readTime1);
-  app.get("/time2", &readTime2);
+  app.get("/control", &readControl);
 
   app.route(staticFiles());
   
   app.put("/led1", &updateLed1);
   app.put("/led2", &updateLed2);
-
-  app.put("/time1", &updateTime1);
-  app.put("/time2", &updateTime2);
+  app.put("/ledC", &updateLedC);
+  app.put("/control", &updateControl);
 
   server.begin();
 
@@ -142,10 +178,15 @@ void setup() {
   ledcSetup(2, 5000, 8);
   ledcAttachPin(LED_2, 2);
 
-  // Inicia o protocolo ntp
-  ntp.begin();           
-  ntp.forceUpdate();    // Atualização .
-
+  timeClient.begin();
+  // Set offset time in seconds to adjust for your timezone, for example:
+  // GMT +1 = 3600
+  // GMT +8 = 28800
+  // GMT -1 = -3600
+  // GMT 0 = 0
+  // GMT BRASIL = -10800
+  timeClient.setTimeOffset(0);
+  
 }
 
 ///////////////////////////////////////////////// LOOP ESP32 ///////////////////////////////////////////////////////////////////
@@ -156,19 +197,40 @@ void loop() {
   if (client.connected())
     app.process(&client);
 
-  hora = ntp.getFormattedTime();  //Armazena na variável hora, o horário atual.
-  //Serial.println(horaInicio);
-  //Serial.println(hora);
-  //delay(1000);
-  
-  if (hora == horaInicio){ 
-    ledcWrite(1, 255);
-    Serial.println("LED SALA ACESO");
-  }
+  if (!timeClient.update())
+    timeClient.forceUpdate();
+  horaAtual = timeClient.getFormattedDate();
+  horaAtual.remove(13);
 
-  if (hora == horaFinal){
-    ledcWrite(1, 0);
-    Serial.println("LED SALA APAGADO");
+////////////////////////////////////////////////////////// ATIVADOR DO PAINEL DE CONTROLE ///////////////////////////////////////////////
+  int tam = control.length();
+  int r=0, t=0;
+
+  for (int i=0; i < tam; i++){
+    if( control.charAt(i) == ',' && (continua == true || novaSelecao == true)) {
+      compara = control.substring(r, i);
+
+      Serial.println(compara);
+      delay(1000);
+      
+      r=(i+1); 
+      t++;
+    }
   }
   
+  /*if(compara == horaAtual){
+     ledcWrite(1, 255);
+     ledcWrite(2, 255);
+     continua = false;
+     novaSelecao = false;
+  }
+  if(compara != horaAtual){
+     ledcWrite(1, 0);
+     ledcWrite(2, 0);
+     continua = true;
+  }*/
+
+    
 }
+
+  
