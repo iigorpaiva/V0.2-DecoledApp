@@ -147,8 +147,8 @@ class App extends Component {
               <ScheduleSelector
                 selection={this.state.schedule}
                 numDays={20}
-                minTime={16}
-                maxTime={23}
+                minTime={8}
+                maxTime={17}
                 onChange={this.handleChange}
                 selectedColor="#14a806"
                 margin={2}

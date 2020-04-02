@@ -37,9 +37,8 @@ String controlback;
 
 // variaveis do ativador
 String compara;
-String comparaHora;
 bool continua = true;
-bool novaSelecao = false;
+int auxC;
 
 ///////////////////////////////////////////////// GETTERS DO SERVIDOR ///////////////////////////////////////////////////////////////////
 
@@ -103,6 +102,19 @@ void updateLed2(Request &req, Response &res) {
 void updateLedC(Request &req, Response &res) {
   ledC = req.readString();
   Serial.println("LED de controle: "+ledC);
+
+  if(ledC == "0")
+    auxC = 0; // 0%
+  if(ledC == "20")
+    auxC = 51; // 20%
+  if(ledC == "40")
+    auxC = 102; // 40%
+  if(ledC == "60")
+    auxC = 153; // 60%
+  if(ledC == "80")
+    auxC = 204; // 80%
+  if(ledC == "100")
+    auxC = 255; // 100%
   
   return readLedC(req, res);
 }
@@ -135,7 +147,7 @@ void updateControl(Request &req, Response &res) {
   if(control.length()>0)
     control = control + ",";
 
-  novaSelecao = true;
+  continua = true;
   
   return readControl(req, res);
 }
@@ -205,31 +217,42 @@ void loop() {
 ////////////////////////////////////////////////////////// ATIVADOR DO PAINEL DE CONTROLE ///////////////////////////////////////////////
   int tam = control.length();
   int r=0, t=0;
-
+  
+if(continua == true){
   for (int i=0; i < tam; i++){
-    if( control.charAt(i) == ',' && (continua == true || novaSelecao == true)) {
+    if( control.charAt(i) == ',' && continua == true) {
       compara = control.substring(r, i);
+      compara.remove(13);
 
-      Serial.println(compara);
-      delay(1000);
-      
+      //Serial.println(compara);
+      //delay(1000);
+    
       r=(i+1); 
       t++;
+
+      
+      if(compara == horaAtual){
+        ledcWrite(1, auxC);
+        ledcWrite(2, auxC);
+        continua=false;
+        //Serial.println("CONTROLE ATIVADO");
+      }
+      if(compara != horaAtual || compara == ""){ 
+        ledcWrite(1, auxC);
+        ledcWrite(2, auxC);
+        continua=true;
+        //Serial.println("CONTROLE DESATIVADO");
+      }
+      
     }
   }
-  
-  /*if(compara == horaAtual){
-     ledcWrite(1, 255);
-     ledcWrite(2, 255);
-     continua = false;
-     novaSelecao = false;
-  }
-  if(compara != horaAtual){
-     ledcWrite(1, 0);
-     ledcWrite(2, 0);
-     continua = true;
-  }*/
+}
 
+  /*if(compara == horaAtual)
+    continua = false;
+  if(compara != horaAtual)
+    continua = true;*/
+  
     
 }
 
