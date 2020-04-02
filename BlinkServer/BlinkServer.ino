@@ -31,6 +31,10 @@ String led2;
 // circle slider da intensidade do ativador
 String ledC;
 
+// toggles
+bool ledon1;
+bool ledon2;
+
 // variaveis do controle: control (intervalos selecionados), controlback (intervalos para voltar para o render())
 String control;
 String controlback;
@@ -41,6 +45,14 @@ bool continua = true;
 int auxC;
 
 ///////////////////////////////////////////////// GETTERS DO SERVIDOR ///////////////////////////////////////////////////////////////////
+
+void readLedOn1(Request &req, Response &res) {
+  res.print(ledon1);
+}
+
+void readLedOn2(Request &req, Response &res) {
+  res.print(ledon2);
+}
 
 void readLed1(Request &req, Response &res) {
   res.print(led1);
@@ -60,6 +72,15 @@ void readControl(Request &req, Response &res) {
 
 /////////////////////////////////////////////////  RESPOSTA DO SERVIDOR  /////////////////////////////////////////////////////////////////////
 
+void updateLedOn1(Request &req, Response &res) {
+  ledon1 = (req.read() != '0');
+  return readLedOn1(req, res);
+}
+
+void updateLedOn2(Request &req, Response &res) {
+  ledon2 = (req.read() != '0');
+  return readLedOn2(req, res);
+}
 
 void updateLed1(Request &req, Response &res) {
   led1 = req.readString();
@@ -170,7 +191,8 @@ void setup() {
   app.get("/led1", &readLed1);
   app.get("/led2", &readLed2);
   app.get("/ledC", &readLedC);
-
+  app.get("/ledon1", &readLedOn1);
+  app.get("/ledon2", &readLedOn2);
   app.get("/control", &readControl);
 
   app.route(staticFiles());
@@ -179,6 +201,8 @@ void setup() {
   app.put("/led2", &updateLed2);
   app.put("/ledC", &updateLedC);
   app.put("/control", &updateControl);
+  app.put("/ledon1", &updateLedOn1);
+  app.put("/ledon2", &updateLedOn2);
 
   server.begin();
 
@@ -238,8 +262,8 @@ if(continua == true){
         //Serial.println("CONTROLE ATIVADO");
       }
       if(compara != horaAtual || compara == ""){ 
-        ledcWrite(1, auxC);
-        ledcWrite(2, auxC);
+        ledcWrite(1, 0);
+        ledcWrite(2, 0);
         continua=true;
         //Serial.println("CONTROLE DESATIVADO");
       }

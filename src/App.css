@@ -60,6 +60,20 @@ h1 {
   
 }
 
+.Esquerda{
+  margin-left: 550%;
+  margin-top: -60%;
+  height: 100px;
+  float: inline-end;
+}
+
+.Direita {
+  margin-left: 110%;
+  margin-top: -60%;
+  height: 100px;
+  float: inline-end;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
