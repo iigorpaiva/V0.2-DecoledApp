@@ -13,6 +13,9 @@
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
 
+
+///////////////////////////////////////////////// VARIAVEIS GLOBAIS ////////////////////////////////////////////////////////
+
 String horaAtual;
 String dayStamp;
 String timeStamp;
@@ -219,9 +222,11 @@ void setup() {
   // GMT +1 = 3600
   // GMT +8 = 28800
   // GMT -1 = -3600
-  // GMT 0 = 0
+  // GMT 0 = 0 
   // GMT BRASIL = -10800
+  // USAMOS GMT 0 PARA SINCRONIZAR COM O COMPONENTE SCHEDULE DO REACT
   timeClient.setTimeOffset(0);
+
   
 }
 
