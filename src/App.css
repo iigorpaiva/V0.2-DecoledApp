@@ -60,9 +60,18 @@ h1 {
   
 }
 
+.App-title-toggle {
+  font-size: 0.7em;
+  margin-left: 110%;
+  margin-top: -75%;
+  height: 100px;
+  float: inline-end;
+  
+}
+
 .Esquerda{
   margin-left: 550%;
-  margin-top: -60%;
+  margin-top: -50%;
   height: 100px;
   float: inline-end;
 }

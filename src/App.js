@@ -169,6 +169,7 @@ class App extends Component {
                 tooltipColor="#6ab6e1"
                 stepSize={20}
               />
+              <h1 className="App-title-toggle">Auto</h1>
               <div className="Direita">
                 <ToggleButton
                   value={this.state.ledon1}
@@ -192,6 +193,7 @@ class App extends Component {
                 tooltipColor="#6ab6e1"
                 stepSize={20}
               />
+              <h1 className="App-title-toggle">Auto</h1>
               <div className="Direita">
                 <ToggleButton
                   value={this.state.ledon2}
@@ -205,8 +207,8 @@ class App extends Component {
               <ScheduleSelector
                 selection={this.state.schedule}
                 numDays={20}
-                minTime={8}
-                maxTime={17}
+                minTime={17}
+                maxTime={23}
                 onChange={this.handleChange}
                 selectedColor="#14a806"
                 margin={2}
