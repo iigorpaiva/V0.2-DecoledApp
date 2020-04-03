@@ -6,8 +6,8 @@
 
 #include <WiFiUdp.h>
 
-#define WIFI_SSID "Decoled"
-#define WIFI_PASSWORD "@Decoled1963@"
+#define WIFI_SSID "ISAIAS"
+#define WIFI_PASSWORD "09068888"
 
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
@@ -44,6 +44,7 @@ String controlback;
 
 // variaveis do ativador
 String compara;
+String comparaHora;
 bool continua = true;
 int auxC;
 
@@ -273,11 +274,16 @@ void loop() {
 ////////////////////////////////////////////////////////// ATIVADOR DO PAINEL DE CONTROLE ///////////////////////////////////////////////
   int tam = control.length();
   int r=0, t=0;
+
+if(compara != horaAtual || compara == "" || tam<1 )
+  continua = true;
   
 if(continua == true){
   for (int i=0; i < tam; i++){
     if( control.charAt(i) == ',' && continua == true) {
       compara = control.substring(r, i);
+      comparaHora = control.substring(0, 13);
+      
       compara.remove(13);
 
       //Serial.println(compara);
