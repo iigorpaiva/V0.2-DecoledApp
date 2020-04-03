@@ -92,27 +92,27 @@ void updateLed1(Request &req, Response &res) {
   led1 = req.readString();
   Serial.println("LED 1: "+led1);
   
-  if(led1 == "0" && continua == true){
+  if(led1 == "0" && (continua == true || ledon1 == false) ){
     ledcWrite(1, 0); // 0%
     auxL1 = 0;
   }
-  if(led1 == "20" && continua == true){
+  if(led1 == "20" && (continua == true || ledon1 == false)){
     ledcWrite(1, 51); // 20%
     auxL1 = 51;
   }
-  if(led1 == "40" && continua == true){
+  if(led1 == "40" && (continua == true || ledon1 == false)){
     ledcWrite(1, 102); // 40%
     auxL1 = 102;
   }
-  if(led1 == "60" && continua == true){
+  if(led1 == "60" && (continua == true || ledon1 == false)){
     ledcWrite(1, 153); // 60%
     auxL1 = 153;
   } 
-  if(led1 == "80" && continua == true){
+  if(led1 == "80" && (continua == true || ledon1 == false)){
     ledcWrite(1, 204); // 80%
     auxL1 = 204;
   }
-  if(led1 == "10" && continua == true){
+  if(led1 == "10" && (continua == true || ledon1 == false)){
     ledcWrite(1, 255); // 100%
     auxL1 = 255;
   }
@@ -123,27 +123,27 @@ void updateLed2(Request &req, Response &res) {
   led2 = req.readString();
   Serial.println("LED 2: "+led2);
   
-  if(led2 == "0" && continua == true){
+  if(led2 == "0" && (continua == true || ledon1 == false)){
     ledcWrite(2, 0); // 0%
     auxL2 = 0;
   }
-  if(led2 == "20" && continua == true){
+  if(led2 == "20" && (continua == true || ledon1 == false)){
     ledcWrite(2, 51); // 20%
     auxL2 = 51;
   }
-  if(led2 == "40" && continua == true){
+  if(led2 == "40" && (continua == true || ledon1 == false)){
     ledcWrite(2, 102); // 40%
     auxL2 = 102;
   }
-  if(led2 == "60" && continua == true){
+  if(led2 == "60" && (continua == true || ledon1 == false)){
     ledcWrite(2, 153); // 60%
     auxL2 = 153;
   }
-  if(led2 == "80"){
+  if(led2 == "80" && (continua == true || ledon1 == false)){
     ledcWrite(2, 204); // 80%
     auxL2 = 204;
   }
-  if(led2 == "100" && continua == true){
+  if(led2 == "100" && (continua == true || ledon1 == false)){
     ledcWrite(2, 255); // 100%
     auxL2 = 255;
   }
@@ -290,15 +290,17 @@ if(continua == true){
       if(compara == horaAtual){
         if(ledon1 == 1)
           ledcWrite(1, auxC);
+        if(ledon1 == 0)
+          ledcWrite(1, auxL1);
         if(ledon2 == 1)
           ledcWrite(2, auxC);
+        if(ledon2 == 0)
+          ledcWrite(2, auxL2);
         continua=false;
         Serial.println("CONTROLE ATIVADO");
       }
-      if(compara != horaAtual || compara == ""){ 
-        if(ledon1 == 1)
+      if(compara != horaAtual || compara == "" || tam<1 ){ 
           ledcWrite(1, auxL1);
-        if(ledon2 == 1)
           ledcWrite(2, auxL2);
         continua=true;
         Serial.println("CONTROLE DESATIVADO");
