@@ -206,9 +206,9 @@ class App extends Component {
             <OnDesktop>
               <ScheduleSelector
                 selection={this.state.schedule}
-                numDays={20}
-                minTime={17}
-                maxTime={23}
+                numDays={25}
+                minTime={8}
+                maxTime={17}
                 onChange={this.handleChange}
                 selectedColor="#14a806"
                 margin={2}

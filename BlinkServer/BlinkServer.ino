@@ -6,8 +6,8 @@
 
 #include <WiFiUdp.h>
 
-#define WIFI_SSID "ISAIAS"
-#define WIFI_PASSWORD "09068888"
+#define WIFI_SSID "Decoled"
+#define WIFI_PASSWORD "@Decoled1963@"
 
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
