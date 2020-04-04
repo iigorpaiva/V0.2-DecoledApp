@@ -44,10 +44,10 @@ String controlback;
 
 // variaveis do ativador
 String compara;
-String comparaHora;
 bool continua = true;
-int auxC;
 
+// variaveis de intensidade
+int auxC;
 int auxL1 = 0;
 int auxL2 = 0;
 
@@ -93,30 +93,21 @@ void updateLed1(Request &req, Response &res) {
   led1 = req.readString();
   Serial.println("LED 1: "+led1);
   
-  if(led1 == "0" && (continua == true || ledon1 == false) ){
-    ledcWrite(1, 0); // 0%
-    auxL1 = 0;
-  }
-  if(led1 == "20" && (continua == true || ledon1 == false)){
-    ledcWrite(1, 51); // 20%
-    auxL1 = 51;
-  }
-  if(led1 == "40" && (continua == true || ledon1 == false)){
-    ledcWrite(1, 102); // 40%
-    auxL1 = 102;
-  }
-  if(led1 == "60" && (continua == true || ledon1 == false)){
-    ledcWrite(1, 153); // 60%
+  if(led1 == "0")
+    auxL1 = 0; 
+  if(led1 == "20")
+    auxL1 = 51; 
+  if(led1 == "40")
+    auxL1 = 102; 
+  if(led1 == "60")
     auxL1 = 153;
-  } 
-  if(led1 == "80" && (continua == true || ledon1 == false)){
-    ledcWrite(1, 204); // 80%
+  if(led1 == "80")
     auxL1 = 204;
-  }
-  if(led1 == "10" && (continua == true || ledon1 == false)){
-    ledcWrite(1, 255); // 100%
+  if(led1 == "10")
     auxL1 = 255;
-  }
+    
+  if(continua == true || ledon1 == false)
+    ledcWrite(1, auxL1);
   return readLed1(req, res);
 }
 
@@ -124,30 +115,21 @@ void updateLed2(Request &req, Response &res) {
   led2 = req.readString();
   Serial.println("LED 2: "+led2);
   
-  if(led2 == "0" && (continua == true || ledon1 == false)){
-    ledcWrite(2, 0); // 0%
+  if(led2 == "0")
     auxL2 = 0;
-  }
-  if(led2 == "20" && (continua == true || ledon1 == false)){
-    ledcWrite(2, 51); // 20%
+  if(led2 == "20")
     auxL2 = 51;
-  }
-  if(led2 == "40" && (continua == true || ledon1 == false)){
-    ledcWrite(2, 102); // 40%
+  if(led2 == "40")
     auxL2 = 102;
-  }
-  if(led2 == "60" && (continua == true || ledon1 == false)){
-    ledcWrite(2, 153); // 60%
+  if(led2 == "60")
     auxL2 = 153;
-  }
-  if(led2 == "80" && (continua == true || ledon1 == false)){
-    ledcWrite(2, 204); // 80%
+  if(led2 == "80")
     auxL2 = 204;
-  }
-  if(led2 == "100" && (continua == true || ledon1 == false)){
-    ledcWrite(2, 255); // 100%
+  if(led2 == "100")
     auxL2 = 255;
-  }
+
+  if(continua == true || ledon2 == false)
+    ledcWrite(2, auxL2);
   return readLed2(req, res);
 }
 
@@ -156,17 +138,17 @@ void updateLedC(Request &req, Response &res) {
   Serial.println("LED de controle: "+ledC);
 
   if(ledC == "0")
-    auxC = 0; // 0%
+    auxC = 0;
   if(ledC == "20")
-    auxC = 51; // 20%
+    auxC = 51;
   if(ledC == "40")
-    auxC = 102; // 40%
+    auxC = 102;
   if(ledC == "60")
-    auxC = 153; // 60%
+    auxC = 153;
   if(ledC == "80")
-    auxC = 204; // 80%
+    auxC = 204;
   if(ledC == "100")
-    auxC = 255; // 100%
+    auxC = 255;
   
   return readLedC(req, res);
 }
@@ -271,55 +253,51 @@ void loop() {
   horaAtual = timeClient.getFormattedDate();
   horaAtual.remove(13);
 
+////////////////////////////////////////////////////////// ATUALIZANDO OS VALORES DOS LEDS ///////////////////////////////////////////////
+
+  if(control == ""){
+    ledcWrite(1, auxL1);
+    ledcWrite(2, auxL2);
+  }
+
+  if(ledon1 == false)
+    ledcWrite(1, auxL1);
+
+  if(ledon2 == false)
+    ledcWrite(2, auxL2);
+
 ////////////////////////////////////////////////////////// ATIVADOR DO PAINEL DE CONTROLE ///////////////////////////////////////////////
   int tam = control.length();
   int r=0, t=0;
-
-if(compara != horaAtual || compara == "" || tam<1 )
-  continua = true;
   
-if(continua == true){
   for (int i=0; i < tam; i++){
     if( control.charAt(i) == ',' && continua == true) {
       compara = control.substring(r, i);
-      comparaHora = control.substring(0, 13);
-      
       compara.remove(13);
 
-      //Serial.println(compara);
+      //Serial.println("ESTA STRING: "+compara);
       //delay(1000);
     
       r=(i+1); 
       t++;
-
       
       if(compara == horaAtual){
         if(ledon1 == 1)
           ledcWrite(1, auxC);
-        if(ledon1 == 0)
-          ledcWrite(1, auxL1);
         if(ledon2 == 1)
           ledcWrite(2, auxC);
-        if(ledon2 == 0)
-          ledcWrite(2, auxL2);
         continua=false;
-        Serial.println("CONTROLE ATIVADO");
+        //Serial.println("CONTROLE ATIVADO");
       }
       if(compara != horaAtual || compara == "" || tam<1 ){ 
           ledcWrite(1, auxL1);
           ledcWrite(2, auxL2);
         continua=true;
-        Serial.println("CONTROLE DESATIVADO");
+        //Serial.println("CONTROLE DESATIVADO");
       }
       
     }
   }
-}
-
-  /*if(compara == horaAtual)
-    continua = false;
-  if(compara != horaAtual)
-    continua = true;*/
   
     
 }
