@@ -275,6 +275,7 @@ void loop() {
   if(ativado == false){
     ledcWrite(1, auxL1);
     ledcWrite(2, auxL2);
+    continua = true;
   }
 
 ////////////////////////////////////////////////////////// ATIVADOR DO PAINEL DE CONTROLE ///////////////////////////////////////////////
@@ -284,7 +285,7 @@ void loop() {
   for (int i=0; i < tam; i++){
     if( control.charAt(i) == ',' && continua == true) {
       compara = control.substring(r, i);
-      compara.remove(13);
+      compara = compara.substring(0, 13);
 
       //Serial.println("COMPARA: "+compara);
       //delay(1000);
@@ -305,8 +306,18 @@ void loop() {
       
     }
   }
-  
-    
+
+////////////////////////////////////////////////////////// ATUALIZA QUANDO SAI DO FOR //////////////////////////////////////
+
+  if(compara != horaAtual){
+    ativado = false;
+    Serial.println("ULTIMO TESTE FALSE");
+  }
+
+  if(compara == horaAtual){
+    ativado = true;
+    Serial.println("ULTIMO TESTE TRUE");
+  }
 }
 
   
