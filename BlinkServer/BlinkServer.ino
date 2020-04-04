@@ -45,6 +45,7 @@ String controlback;
 // variaveis do ativador
 String compara;
 bool continua = true;
+bool ativado = false;
 
 // variaveis de intensidade
 int auxC;
@@ -255,16 +256,26 @@ void loop() {
 
 ////////////////////////////////////////////////////////// ATUALIZANDO OS VALORES DOS LEDS ///////////////////////////////////////////////
 
-  if(control == ""){
-    ledcWrite(1, auxL1);
-    ledcWrite(2, auxL2);
-  }
+  if(control == "")
+    ativado = false;
 
   if(ledon1 == false)
     ledcWrite(1, auxL1);
 
   if(ledon2 == false)
     ledcWrite(2, auxL2);
+
+  if(ativado == true){
+    if(ledon1 == 1)
+      ledcWrite(1, auxC);
+    if(ledon2 == 1)
+      ledcWrite(2, auxC);
+  }
+
+  if(ativado == false){
+    ledcWrite(1, auxL1);
+    ledcWrite(2, auxL2);
+  }
 
 ////////////////////////////////////////////////////////// ATIVADOR DO PAINEL DE CONTROLE ///////////////////////////////////////////////
   int tam = control.length();
@@ -275,25 +286,21 @@ void loop() {
       compara = control.substring(r, i);
       compara.remove(13);
 
-      //Serial.println("ESTA STRING: "+compara);
+      //Serial.println("COMPARA: "+compara);
       //delay(1000);
     
       r=(i+1); 
       t++;
       
       if(compara == horaAtual){
-        if(ledon1 == 1)
-          ledcWrite(1, auxC);
-        if(ledon2 == 1)
-          ledcWrite(2, auxC);
+        ativado = true;
         continua=false;
-        //Serial.println("CONTROLE ATIVADO");
+        Serial.println("CONTROLE ATIVADO");
       }
       if(compara != horaAtual || compara == "" || tam<1 ){ 
-          ledcWrite(1, auxL1);
-          ledcWrite(2, auxL2);
+        ativado = false;
         continua=true;
-        //Serial.println("CONTROLE DESATIVADO");
+        Serial.println("CONTROLE DESATIVADO");
       }
       
     }
