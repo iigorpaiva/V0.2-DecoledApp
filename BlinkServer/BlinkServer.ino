@@ -38,9 +38,9 @@ String ledC;
 bool ledon1;
 bool ledon2;
 
-// variaveis do controle: control (intervalos selecionados), controlback (intervalos para voltar para o render())
+// variaveis do controle: control (intervalos selecionados), controlBack (intervalos para voltar para o render())
 String control;
-String controlback;
+String controlBack;
 
 // variaveis do ativador
 String compara;
@@ -75,7 +75,7 @@ void readLedC(Request &req, Response &res) {
 }
 
 void readControl(Request &req, Response &res) {
-  res.print(controlback);
+  res.print(controlBack);
 }
 
 /////////////////////////////////////////////////  RESPOSTA DO SERVIDOR  /////////////////////////////////////////////////////////////////////
@@ -158,7 +158,7 @@ void updateLedC(Request &req, Response &res) {
 
 void updateControl(Request &req, Response &res) {
   control = req.readString();
-  controlback = control;
+  controlBack = control;
   
   // TRATAMENTO PARA LIMPAR A STRING JSON
   int tam = control.length();
