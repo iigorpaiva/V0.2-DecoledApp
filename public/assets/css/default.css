@@ -2934,7 +2934,9 @@ tbody.collapse.show {
   line-height: 1;
   background-color: transparent;
   border: 2px solid transparent;
-  border-radius: 0.25rem; }
+  border-radius: 0.25rem; 
+  background-image: url('https://mdbootstrap.com/img/svg/hamburger6.svg?color=000');
+}
   .navbar-toggler:hover, .navbar-toggler:focus {
     text-decoration: none; }
   .navbar-toggler:not(:disabled):not(.disabled) {
